@@ -1,38 +1,94 @@
 .App {
-  text-align: center;
+    justify-content: center;
+    height: max-content;
+    text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.container {
+    width: 100%;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.Navigation_Heder {
+    background-color: #e91e63;
+    padding: 0 20%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 0 5px 0 rgba(0, 0, 0, 0.10);
+    /* flex-wrap: wrap; */
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.Navigation_Button {
+    width:  100%;
+    background-color: #e91e63;
+    border: none;
+    color: #ffffff;
+    padding: 20px 0px;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+
+    flex-basis: 190px;
+    font-size: 16px;
 }
 
-.App-link {
-  color: #61dafb;
+
+.shadow{
+    /* box-shadow: 0 0px 8px 0 rgba(165, 165, 165, 0.2), 0 6px 20px 0 rgba(209, 209, 209, 0.19); */
+    elevation: 50deg;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+@media screen and (max-width : 760px){
+
+    .Navigation_Heder {
+        flex-wrap: wrap;
+        padding: 0;
+        /* font-size: 200; */
+        flex-flow: column;
+        justify-content: center;
+
+        
+    }   
+    .Navigation_Button {
+        justify-content: center;
+        align-items: center;
+        flex-basis: 50px;
+        padding: 0;
+        border-top : 1px  dotted lightgray;
+
+        font-size: 20px;
+    }
+}
+
+
+@media screen and (max-width : 0px){
+
+    .Navigation_Heder {
+        flex-wrap: wrap;
+        /* font-size: 200; */
+        flex-flow: column;
+    }   
+    .Navigation_Button{
+        font-size: 12px;
+    }
+}
+
+
+.ripple {
+    display: flex;
+	background-color: white;
+	opacity : 0.5;
+	width: 100%;
+	height: 20px;
+	border-radius: 1%;
+	transform: translateX(-100%) translateY(-100%);
+	mix-blend-mode: screen;
+	animation: ripple 1000ms ease-out ;
+}
+
+@keyframes ripple {
+	0%   { transform: translate(100%, -100%); }
+	80%  { transform: translate(-100%, -100%) scale(50); }
+    100% { transform: translate(-100%, -100%) scale(50); opacity: 0; }
+    0%   { transform: translate(0%, 0%); }
 }

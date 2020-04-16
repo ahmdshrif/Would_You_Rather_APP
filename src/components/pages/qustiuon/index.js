@@ -2,40 +2,58 @@ import React from 'react'
 import { connect } from 'react-redux'
 import '../../../App.css'
 import Background from '../../../images/user.jpg';
-import { getUsers , loginUser } from "../../../actions/authAction";
-class signin extends React.Component {
-  constructor(props){
+
+
+class Home extends React.Component {
+  constructor(props) {
     super(props)
-    this.state={
-      user:"null"
+    this.state = {
+      selectedOption: ""
     }
   }
-  async componentDidMount() {
-    await this.props.getUsers()
-  }
-
-  signin =()=>{
-    this.props.loginUser(this.props.users[this.state.user])
+  handleOptionChange = (value) => {
+    this.setState({
+      selectedOption: value
+    });
   }
   render() {
     return (
       <div style={Styles.container}>
 
         <div className="w3-card-2" style={Styles.card}>
-          <div className="w3-card" style={Styles.cardHeder}>{"Welcome To would you rather App "}</div>
+          <div className="w3-card" style={Styles.cardHeder}>{"Titel"}</div>
           <div style={Styles.cardSectionContainer}>
-            <h1>Sign In</h1>
-              <select style={{flex:1 , width :"70%"}} value={this.state.user}
-              onChange={(e)=>this.setState({user:e.target.value})}
-              >
-                <option value={"null"} disabled> chose user</option>
-                {  Object.keys(this.props.users).map((key,user)=>
-                  <option key={key} value={key}>{key}</option> )}
-              </select>
-
-            <button onClick={this.signin} style={Styles.submitButton} className="w3-btn w3-block">Sign In</button>
-
-
+            <div style={Styles.avatarSection} >
+              <div className="ripple" /> {/*animation dive */}
+            </div>
+            <div style={Styles.qustionSectionsContainer} >
+              <div style={Styles.qustionSections}>
+                <h1 >Would You Rather... </h1>
+                <form>
+                  <div style={Styles.inputDive}
+                    onClick={() => this.handleOptionChange("option1")}
+                  >
+                    <label style={Styles.lable} for="male">
+                      <input style={Styles.input} type="radio"
+                        checked={this.state.selectedOption === 'option1'}
+                      />
+                      {"Male"}
+                    </label>
+                  </div>
+                  <div style={Styles.inputDive}
+                    onClick={() => this.handleOptionChange("option2")}
+                  >
+                    <label style={Styles.lable} for="male">
+                      <input style={Styles.input} type="radio"
+                        checked={this.state.selectedOption === 'option2'}
+                      />
+                      {"Male"}
+                    </label>
+                  </div>
+                </form>
+              </div>
+              <button style={Styles.submitButton}>{"submite"}</button>
+            </div>
           </div>
         </div>
       </div>
@@ -77,13 +95,11 @@ const Styles = {
   cardSectionContainer: {
     marginBottom: 20,
     marginTop: 20,
-    width: "100%",
-
+    marginLeft: 5,
+    marginRigt: 5,
     display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-
+    flexDirection: "row",
+    justifyContent: "space-between",
 
     flex: 1,
   },
@@ -113,8 +129,6 @@ const Styles = {
   submitButton: {
     marginTop: 20,
     marginBottom: 30,
-    height: 50,
-    width: "70%",
 
     padding: 16,
     backgroundColor: "#b0003a",
@@ -136,13 +150,19 @@ const Styles = {
   lable: { fontSize: 25 }
 }
 
+function filter(o1, o2){
+  return Object.keys(o1).filter(k => !(k in o2))
+}
 
-function mapStateToProps({ auth , loginUser }) {
-  const {users} = auth;
-  console.log(users.type)
+function mapStateToProps({ auth, }) {
+  const { loginUser } = auth;
+  const AllQustion ={"aaa":"aa"}
+  console.log(filter(AllQustion,loginUser.answers))
   return {
-    users
+    answers: loginUser.answers,
+    // notAnswer : 
   }
 }
 
-export default connect(mapStateToProps,{getUsers , loginUser})(signin)
+
+export default connect(mapStateToProps)(Home)

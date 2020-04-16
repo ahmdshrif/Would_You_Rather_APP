@@ -1,7 +1,9 @@
 import React from 'react';
 
 import '../../App.css';
-import { withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { logoutUser } from '../../actions/authAction'
 
 class Header extends React.Component {
     constructor(props) {
@@ -31,15 +33,15 @@ class Header extends React.Component {
 
                 >Leader Board </button>
 
-                {this.state.signIn &&
-                    <div style={{ display: "flex", flexDirection: "row", flex: 2 }}>
-                        <div className="Navigation_Button" style={{ color: "deepskyblue" }}  >
-                            {"Welcom Ahmed"}
+                {this.props.user !==null &&
+                    <div style={{ display: "flex", flexDirection: "row", }} className="Navigation_Button" >
+                        <div style={{ minWidth: 220, color: "deepskyblue" }}  >
+                            {"Welcom " + this.props.user}
                         </div>
-                        <button className="Navigation_Button"
+                        <button
                             onClick={() => {
-                                this.props.history.push("./signin")
-                                this.setState({ signIn: false })
+                                this.props.logoutUser()
+                                this.props.history.push("./")
                             }}
                         >
                             logout
@@ -53,4 +55,12 @@ class Header extends React.Component {
 }
 
 
-export default withRouter(Header);
+function mapStateToProps({ auth, }) {
+    const { loginUser } = auth;
+    return {
+        user: loginUser == null ? null: loginUser.name
+    }
+}
+
+
+export default withRouter(connect(mapStateToProps, { logoutUser })(Header));

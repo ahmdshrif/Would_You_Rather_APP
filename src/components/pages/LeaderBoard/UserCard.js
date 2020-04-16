@@ -14,7 +14,7 @@ const Home = ({ image, name, answerQustions, createQustions, points }) => (
                     <h2>{name} </h2>
                     <div style={Styles.qustionsNumberText}>
                         <h3> {"Answer qustions....."}</h3>
-                         <h2> {"  " +answerQustions}</h2>
+                        <h2> {"  " + answerQustions}</h2>
                     </div>
                     <div style={Styles.qustionsNumberText}>
                         <h3> {"Answer qustions....."}</h3> <h2> {createQustions}</h2>
@@ -39,13 +39,13 @@ const Home = ({ image, name, answerQustions, createQustions, points }) => (
 
 
 const Styles = {
-    qustionsNumberText:{
-      
-        flex : 1 ,
-        display : "flex",
-        justifyContent :"center",
-        alignItems : "space-between",
-        width  :"100%"
+    qustionsNumberText: {
+
+        flex: 1,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "space-between",
+        width: "100%"
     },
     ScoreCircle: {
         height: 50,
@@ -85,9 +85,11 @@ const Styles = {
         borderColor: "gray"
     },
     RightPartContainer: {
-        borderLeftWidth: 2,
-        borderLeftColor: "red",
-        borderLeftStyle: "dotted",
+        minWidth: 150,
+        minHeight: 150,
+        // borderLeftWidth: 2,
+        // borderLeftColor: "red",
+        // borderLeftStyle: "dotted",
         display: "flex",
         flex: 1,
         justifyContent: "center",
@@ -161,9 +163,9 @@ const Styles = {
         backgroundPosition: 'center',
         backgroundSize: 'contain',
         paddingRight: 15,
-        borderRightWidth: 2,
-        borderRightColor: "red",
-        borderRightStyle: "dotted",
+        // borderRightWidth: 2,
+        // borderRightColor: "red",
+        // borderRightStyle: "dotted",
     },
     qustionSectionsContainer: {
         minWidth: 300,

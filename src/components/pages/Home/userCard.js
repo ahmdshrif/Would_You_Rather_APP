@@ -10,7 +10,7 @@ export default () => (
             <div style={Styles.qustionSectionsContainer} >
                 <div style={Styles.qustionSections}>
                     <h3>Would You Rather... </h3>
-                    <h7>>>>>>subtitle,,,,,</h7>
+                    <h6>>>>>>subtitle,,,,,</h6>
                 
                 </div>
                 <button style={Styles.submitButton}>{"view poll"}</button>

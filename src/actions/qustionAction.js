@@ -1,4 +1,5 @@
 //*****************************************************************************
+import { getUsers, } from "./authAction";
 import { _getQuestions, _saveQuestion, _saveQuestionAnswer } from '../utils/_DATA'
 //*****************************************************************************
 export const GET_QUESTIONS = "GET_QUESTIONS";
@@ -11,13 +12,6 @@ export const SAVE_QUESTION_ANSEAR = "SAVE_QUESTION_ANSEAR";
 export const SAVE_QUESTION_ANSEAR_SUCCESS = "SAVE_QUESTION_ANSEAR_SUCCESS";
 export const SAVE_QUESTION_ANSEAR_FAIL = "SAVE_QUESTION_ANSEAR_FAIL";
 //*****************************************************************************
-
-export const loginUser = data => {
-    return {
-        type: LOGIN_USER,
-        payload: data,
-    };
-};
 
 
 
@@ -35,25 +29,29 @@ export const getQuestions = () => async dispatch => {
 
 //*****************************************************************************
 
-export const saveQuestion = () => async dispatch => {
+export const saveQuestion = (author, optionOneText, optionTwoText) => async dispatch => {
     dispatch({ type: SAVE_QUESTION });
     try {
-        const data = await _saveQuestion();
+        const data = await _saveQuestion({ optionOneText, optionTwoText, author });
+        await dispatch(getQuestions())
+        await dispatch(getUsers())
         dispatch({ type: SAVE_QUESTION_SUCCESS, payload: data });
     } catch (err) {
         dispatch({ type: SAVE_QUESTION_FAIL, payload: err.message });
-        alert(err.message)
+        alert("can't save qustion  answear, try again ")
     }
 };
 
 
 //*****************************************************************************
 
-export const saveQuestionAnswer = () => async dispatch => {
+export const saveQuestionAnswer = (authedUser, qid, answer) => async dispatch => {
     dispatch({ type: SAVE_QUESTION_ANSEAR });
     try {
-        const data = await _saveQuestionAnswer();
-        dispatch({ type: SAVE_QUESTION_ANSEAR_SUCCESS, payload: data });
+        await _saveQuestionAnswer({ authedUser, qid, answer });
+        await dispatch(getUsers())
+        await dispatch(getQuestions())
+        dispatch({ type: SAVE_QUESTION_ANSEAR_SUCCESS, });
     } catch (err) {
         dispatch({ type: SAVE_QUESTION_ANSEAR_FAIL, payload: err.message });
         alert(err.message)

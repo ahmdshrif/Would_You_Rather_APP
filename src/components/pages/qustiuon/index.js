@@ -1,14 +1,17 @@
 import React from 'react'
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
+import { saveQuestionAnswer } from "../../../actions/qustionAction";
+import Result from './result';
+import QustionPoll from "./qustionPoll";
 import '../../../App.css'
-import Background from '../../../images/user.jpg';
-
+import { withRouter } from "react-router-dom";
 
 class Home extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      selectedOption: ""
+      selectedOption: "",
+      answers: false,
     }
   }
   handleOptionChange = (value) => {
@@ -16,153 +19,56 @@ class Home extends React.Component {
       selectedOption: value
     });
   }
+  savaQustion = async () => {
+    await this.props.saveQuestionAnswer(
+      this.props.user.id,
+      this.props.qustion.id,
+      this.state.selectedOption
+    )
+
+  }
   render() {
-    return (
-      <div style={Styles.container}>
-
-        <div className="w3-card-2" style={Styles.card}>
-          <div className="w3-card" style={Styles.cardHeder}>{"Titel"}</div>
-          <div style={Styles.cardSectionContainer}>
-            <div style={Styles.avatarSection} >
-              <div className="ripple" /> {/*animation dive */}
-            </div>
-            <div style={Styles.qustionSectionsContainer} >
-              <div style={Styles.qustionSections}>
-                <h1 >Would You Rather... </h1>
-                <form>
-                  <div style={Styles.inputDive}
-                    onClick={() => this.handleOptionChange("option1")}
-                  >
-                    <label style={Styles.lable} for="male">
-                      <input style={Styles.input} type="radio"
-                        checked={this.state.selectedOption === 'option1'}
-                      />
-                      {"Male"}
-                    </label>
-                  </div>
-                  <div style={Styles.inputDive}
-                    onClick={() => this.handleOptionChange("option2")}
-                  >
-                    <label style={Styles.lable} for="male">
-                      <input style={Styles.input} type="radio"
-                        checked={this.state.selectedOption === 'option2'}
-                      />
-                      {"Male"}
-                    </label>
-                  </div>
-                </form>
-              </div>
-              <button style={Styles.submitButton}>{"submite"}</button>
-            </div>
-          </div>
+    if (this.props.qustion == null){
+      return(
+        <div>
+           error 404
         </div>
-      </div>
-
+      )
+    }
+    if (this.props.Qstate) {
+      return <Result
+        qustion={this.props.qustion}
+        author={this.props.author}
+        sulotion={this.props.user.answers[this.props.qustion.id]}
+      />
+    }
+    return (
+      <QustionPoll
+        qustion={this.props.qustion}
+        author={this.props.author}
+        handleOptionChange={this.handleOptionChange}
+        selectedOption={this.state.selectedOption}
+        onSubmit={this.savaQustion}
+      />
     );
   }
 }
 
 
-const Styles = {
-  container: {
-    display: "flex",
-    flex: 1,
-    justifyContent: "center",
-    minHeight: 300,
-    padding: 20,
+function mapStateToProps({ auth, qustions }, props) {
+  const { id } = props.match.params
+  const { loginUser, users } = auth;
+  const { AllQustions } = qustions;
 
-  },
-  card: {
-    display: "flex",
-    flexDirection: "column",
-    flex: 1,
-    maxWidth: "650px",
-    borderRadius: 1
-  },
-  cardHeder: {
-    borderWidth: 2,
-    borderButtomRightRadius: 30,
-    backgroundColor: "#6a4f4b",
-    minHeight: 60,
-    marginBottom: 6,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    color: "#ffffff",
-    fontSize: 15,
-    fontWeight: "500"
-  },
-  cardSectionContainer: {
-    marginBottom: 20,
-    marginTop: 20,
-    marginLeft: 5,
-    marginRigt: 5,
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-
-    flex: 1,
-  },
-  avatarSection: {
-    flex: 1,
-    backgroundRepeat: "no-repeat",
-    backgroundPosition: 'center',
-    backgroundSize: 'contain',
-
-    backgroundImage: `url(${Background})`,
-    paddingRight: 15,
-    borderRightWidth: 2,
-    borderRightColor: "red",
-    borderRightStyle: "dotted",
-  },
-  qustionSectionsContainer: {
-    display: "flex",
-    flexDirection: "column",
-    flex: 2,
-    alignItems: "center",
-    justifyContent: "center"
-  },
-  qustionSections: {
-    flex: 1,
-
-  },
-  submitButton: {
-    marginTop: 20,
-    marginBottom: 30,
-
-    padding: 16,
-    backgroundColor: "#b0003a",
-    border: "none",
-    color: "white",
-    paddingLeft: "32px",
-    paddingRight: "32px",
-    paddingTop: "15px",
-    paddingBottom: "15px",
-    borderRadius: 10,
-    textAlign: "center",
-    textDecoration: "none",
-    display: "inline-block",
-    fontSize: "16px",
-
-  },
-  inputDive: { display: "flex", alignItems: "center", marginBottom: 10 },
-  input: { marginTop: 5, marginRight: 10 },
-  lable: { fontSize: 25 }
-}
-
-function filter(o1, o2){
-  return Object.keys(o1).filter(k => !(k in o2))
-}
-
-function mapStateToProps({ auth, }) {
-  const { loginUser } = auth;
-  const AllQustion ={"aaa":"aa"}
-  console.log(filter(AllQustion,loginUser.answers))
   return {
-    answers: loginUser.answers,
-    // notAnswer : 
+    users,
+    qustion: AllQustions[id],
+    author: AllQustions[id] == null ? null :users[AllQustions[id].author],
+    user: loginUser,
+    Qstate: Object.keys(loginUser.answers).find(Qid => Qid === id) !== undefined
   }
 }
 
 
-export default connect(mapStateToProps)(Home)
+
+export default withRouter(connect(mapStateToProps, { saveQuestionAnswer })(Home))

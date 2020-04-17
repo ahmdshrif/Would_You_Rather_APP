@@ -1,7 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux';
 import UserCard from './UserCard';
-import image from '../../../images/user.jpg';
 
 
 class LeaderBoard extends React.Component {
@@ -11,9 +10,9 @@ class LeaderBoard extends React.Component {
     return (
       <div style={Styles.container}>
         <div className="ripple" />
-        <UserCard image={image} name={"ahmed"} answerQustions={55} createQustions={3} points={5} />
-        <UserCard image={image} name={"ahmed"} answerQustions={55} createQustions={3} points={5} />
-        <UserCard image={image} name={"ahmed"} answerQustions={55} createQustions={3} points={5} />
+        {this.props.users.map((user) => (
+          <UserCard image={user.avatarURL} name={user.name} answerQustions={Object.keys(user.answers).length} createQustions={user.questions.length} points={user.points} />
+        ))}
       </div>
 
     );
@@ -21,10 +20,21 @@ class LeaderBoard extends React.Component {
 }
 
 const Styles = { container: { dispaly: "flex", flex: 1, }, }
+const getuserpoints = (users) => (
+  Object.keys(users).map((user) => {
+    var NewUsers = {}
+    let points = Object.keys(users[user].answers).length + users[user].questions.length
+    NewUsers[points] = { ...users[user], points: points }
+    return NewUsers[points]
+  }).sort((a, b) => (a.points < b.points) ? 1 : -1)
+)
 
-function mapStateToProps({ authedUser }) {
+
+function mapStateToProps({ auth }) {
+  const { users } = auth;
   return {
-    loading: authedUser === null
+    users: getuserpoints(users)
+
   }
 }
 

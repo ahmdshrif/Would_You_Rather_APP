@@ -1,5 +1,5 @@
 //*****************************************************************************
-import { _getUsers, _getQuestions, _saveQuestion, _saveQuestionAnswer } from '../utils/_DATA'
+import { _getUsers,  } from '../utils/_DATA'
 //*****************************************************************************
 export const LOGIN_USER = "LOGIN_USER";
 export const GET_USERS = "GET_USERS";
@@ -28,6 +28,7 @@ export const getUsers = () => async dispatch => {
     try {
         const data = await _getUsers();
         dispatch({ type: GET_USERS_SUCCESS, payload: data });
+        return data
     } catch (err) {
         dispatch({ type: GET_USERS_FAIL, payload: err.message });
         alert(err.message)

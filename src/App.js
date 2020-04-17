@@ -9,10 +9,14 @@ import Home from './components/pages/Home'
 import LeaderBoard from './components/pages/LeaderBoard'
 import NewQustion from './components/pages/NewQustion'
 import SignIn from './components/pages/SignIn'
-import { getUsers } from "./actions/authAction";
+import questions from './components/pages/qustiuon';
+import { getUsers, } from "./actions/authAction";
+import { getQuestions } from "./actions/qustionAction";
 class App extends React.Component {
   async componentDidMount() {
     await this.props.getUsers()
+    await this.props.getQuestions()
+
   }
 
   render() {
@@ -25,10 +29,11 @@ class App extends React.Component {
               ?
               <Route path='/' component={SignIn} />
 
-              : <div>
+              : <div className="body">
                 <Route path='/' exact component={Home} />
-                <Route path='/newqustion' exact component={NewQustion} />
-                <Route path='/leaderBoard' exact component={LeaderBoard} />
+                <Route path='/add' exact component={NewQustion} />
+                <Route path='/leaderboard' exact component={LeaderBoard} />
+                <Route path='/questions/:id' component={questions} />
               </div>}
           </div>
         </div>
@@ -44,4 +49,4 @@ function mapStateToProps({ auth }) {
   }
 }
 
-export default connect(mapStateToProps, { getUsers })(App)
+export default connect(mapStateToProps, { getUsers, getQuestions })(App)

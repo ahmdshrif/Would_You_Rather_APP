@@ -1,19 +1,19 @@
 import React from 'react'
-import Background from '../../../images/user.jpg';
 
-export default () => (
+export default ({ subTitle, answered, openQustions, id, author }) => (
     <div className="w3-card-2" style={Styles.card}>
-        <div className="w3-card" style={Styles.cardHeder}>{"Titel"}</div>
+        <div className="w3-card" style={Styles.cardHeder}>{author.name + " ask.."}</div>
         <div style={Styles.cardSectionContainer}>
-            <div style={Styles.avatarSection} >
+            <div style={{
+                ...Styles.avatarSection, backgroundImage: `url(${author.avatarURL})`,
+            }} >
             </div>
             <div style={Styles.qustionSectionsContainer} >
                 <div style={Styles.qustionSections}>
                     <h3>Would You Rather... </h3>
-                    <h6>>>>>>subtitle,,,,,</h6>
-                
+                    <h6>{subTitle + " ..or ...."}</h6>
                 </div>
-                <button style={Styles.submitButton}>{"view poll"}</button>
+                <button onClick={() => openQustions(id)} style={Styles.submitButton}>{answered ? "view result" : "answerd Qustion"}</button>
             </div>
         </div>
     </div>
@@ -25,15 +25,15 @@ export default () => (
 const Styles = {
 
     card: {
-        marginTop : 10 , 
+        marginTop: 10,
 
         display: "flex",
         flexDirection: "column",
         flex: 1,
-        maxWidth: "550px",
+        maxWidth: "650px",
         borderRadius: 1,
-        width :"50%",
-    
+        width: "70%",
+
     },
     cardHeder: {
         borderWidth: 2,
@@ -65,7 +65,6 @@ const Styles = {
         backgroundPosition: 'center',
         backgroundSize: 'contain',
 
-        backgroundImage: `url(${Background})`,
         paddingRight: 15,
         borderRightWidth: 2,
         borderRightColor: "red",

@@ -16,10 +16,11 @@ class signin extends React.Component {
 
   signin =()=>{
     this.props.loginUser(this.props.users[this.state.user])
+    // this.props.history.push("/")
   }
   render() {
     return (
-      <div style={Styles.container}>
+      <div style={Styles.container} className="body">
 
         <div className="w3-card-2" style={Styles.card}>
           <div className="w3-card" style={Styles.cardHeder}>{"Welcome To would you rather App "}</div>
@@ -51,8 +52,7 @@ const Styles = {
     flex: 1,
     justifyContent: "center",
     minHeight: 300,
-    padding: 20,
-
+    marginTop:50,
   },
   card: {
     display: "flex",

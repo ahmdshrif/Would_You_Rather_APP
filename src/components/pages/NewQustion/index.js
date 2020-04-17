@@ -1,21 +1,42 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import '../../../App.css'
-import Background from '../../../images/user.jpg';
+import '../../../App.css';
+import { saveQuestion } from "../../../actions/qustionAction";
 
 
 class Home extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      selectedOption: "",
-      persent: 50,
+      optionOneText: "",
+      optionTwoText: "",
     }
   }
-  handleOptionChange = (changeEvent) => {
+
+  handleOptionOneChange = (changeEvent) => {
     this.setState({
-      selectedOption: changeEvent.target.value
+      optionOneText: changeEvent.target.value
     });
+  }
+  handleOptionTwoChange = (changeEvent) => {
+    this.setState({
+      optionTwoText: changeEvent.target.value
+    });
+  }
+  onSubmit = async () => {
+    try {
+      this.setState({
+        optionOneText: "",
+        optionTwoText: ""
+      })
+      await this.props.saveQuestion(
+        this.props.user.id,
+        this.state.optionOneText,
+        this.state.optionTwoText
+      );
+    } catch{
+      alert("error on add qustion try again ")
+    }
   }
   render() {
     return (
@@ -26,10 +47,10 @@ class Home extends React.Component {
           <div style={Styles.cardSectionContainer}>
             <h3>complete the qustions </h3>
             <h2 >would you rather  ...</h2>
-            <input style={Styles.input} class="w3-input" type="text" placeholder="enter option One" />
+            <input value={this.state.optionOneText} onChange={this.handleOptionOneChange} style={Styles.input} className="w3-input" type="text" placeholder="enter option One" />
             <h4 > OR </h4>
-            <input style={Styles.input} class="w3-input" type="text" placeholder="enter option Two" />
-            <button style={Styles.button} class="w3-button">Submit</button>
+            <input value={this.state.optionTwoText} onChange={this.handleOptionTwoChange} style={Styles.input} className="w3-input" type="text" placeholder="enter option Two" />
+            <button onClick={this.onSubmit} style={Styles.button} className="w3-button">Submit</button>
           </div>
         </div>
       </div>
@@ -83,8 +104,7 @@ const Styles = {
   cardSectionContainer: {
     marginBottom: 20,
     marginTop: 20,
-    marginLeft: 5,
-    marginRigt: 5,
+
     justifyContent: "center",
     alignItems: "center",
     flexDirection: 'column',
@@ -103,17 +123,17 @@ const Styles = {
     backgroundColor: "#b0003a",
     borderRadius: 20,
     width: "50%",
-    color : "white"
+    color: "white"
   }
 
 
 }
 
 
-function mapStateToProps({ authedUser }) {
+function mapStateToProps({ auth }) {
   return {
-    loading: authedUser === null
+    user: auth.loginUser
   }
 }
 
-export default connect(mapStateToProps)(Home)
+export default connect(mapStateToProps, { saveQuestion })(Home)

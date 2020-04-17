@@ -6,12 +6,11 @@ const Home = ({ image, name, answerQustions, createQustions, points }) => (
     <div style={Styles.container}>
 
         <div className="w3-card-2" style={Styles.card}>
-            <div className="w3-card" style={Styles.cardHeder}>{"Titel"}</div>
+            <div className="w3-card" style={Styles.cardHeder}>{name} </div>
             <div style={Styles.cardSectionContainer}>
                 <div style={{ ...Styles.avatarSection, backgroundImage: `url(${image})` }} >
                 </div>
                 <div style={Styles.qustionSectionsContainer} >
-                    <h2>{name} </h2>
                     <div style={Styles.qustionsNumberText}>
                         <h3> {"Answer qustions....."}</h3>
                         <h2> {"  " + answerQustions}</h2>
@@ -95,14 +94,6 @@ const Styles = {
         justifyContent: "center",
         alignItems: "center",
     },
-
-    qustionSectionsContainer: {
-        width: "70%",
-        display: "flex",
-        flex: 1,
-        justifyContent: "space-between"
-    },
-
     container: {
         display: "flex",
         flex: 1,
@@ -168,10 +159,9 @@ const Styles = {
         // borderRightStyle: "dotted",
     },
     qustionSectionsContainer: {
-        minWidth: 300,
-
-        marginLeft: "25px",
         display: "flex",
+        minWidth: 300,
+        marginLeft: "25px",
         flexDirection: "column",
         flex: 2,
         alignItems: "center",
@@ -184,10 +174,4 @@ const Styles = {
 }
 
 
-function mapStateToProps({ authedUser }) {
-    return {
-        loading: authedUser === null
-    }
-}
-
-export default connect(mapStateToProps)(Home)
+export default connect()(Home)

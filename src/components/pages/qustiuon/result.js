@@ -1,71 +1,64 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import '../../../App.css'
 import Background from '../../../images/user.jpg';
 
 
-class Home extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            selectedOption: "",
-            persent: 50,
-        }
-    }
-    handleOptionChange = (changeEvent) => {
-        this.setState({
-            selectedOption: changeEvent.target.value
-        });
-    }
-    render() {
-        return (
-            <div style={Styles.container}>
+export default ({ qustion, author, sulotion, }) => {
+    const o1 = qustion.optionOne.votes.length;
+    const o2 = qustion.optionTwo.votes.length;
+    const all = o1 + o2
+    const persent1 = Number((o1 / all * 100).toFixed(2));
+    const persent2 = Number((o2 / all * 100).toFixed(2));
+    return (
+        <div style={Styles.container}>
 
-                <div className="w3-card-2" style={Styles.card}>
-                    <div className="w3-card" style={Styles.cardHeder}>{"Titel"}</div>
-                    <div style={Styles.cardSectionContainer}>
-                        <div style={Styles.avatarSection} >
-                            <div className="ripple" /> {/*animation at start */}
-                        </div>
-                        <div style={Styles.qustionSectionsContainer} >
-                            <h1>{"Result :"} </h1>
-                            <div style={Styles.resultSectionContainer}>
-                                <div style={Styles.resultCard}>
+            <div className="w3-card-2" style={Styles.card}>
+                <div className="w3-card" style={Styles.cardHeder}>{author.name + " ask.."}</div>
+                <div style={Styles.cardSectionContainer}>
+                    <div style={{
+                        ...Styles.avatarSection, backgroundImage: `url(${author.avatarURL})`,
+                    }} >
+                        <div className="ripple" /> {/*animation at start */}
+                    </div>
+                    <div style={Styles.qustionSectionsContainer} >
+                        <h1>{"Result :"} </h1>
+                        <div style={Styles.resultSectionContainer}>
+                            <div style={Styles.resultCard}>
+                                {sulotion === "optionOne" &&
                                     <div style={Styles.badgeContainer}>
                                         <div style={Styles.badge} >your choise</div>
+                                    </div>}
+                                <h3 style={Styles.optionTitle}> {qustion.optionOne.text} </h3>
+                                <div style={{ ...Styles.bareContaioner }}>
+                                    <div style={{ ...Styles.bareColorPart, width: persent1.toString() + "%" }}>
+                                        <h5 style={Styles.bareText}> {persent1}  % </h5>
                                     </div>
-                                    <h3 style={Styles.optionTitle}> {"whold you rather "} </h3>
-                                    <div style={{ ...Styles.bareContaioner }}>
-                                        <div style={{ ...Styles.bareColorPart, width: this.state.persent.toString() + "%" }}>
-                                            <h5 style={Styles.bareText}> {this.state.persent}  % </h5>
-                                        </div>
-                                    </div>
-                                    <h6> 2 of  3 </h6>
                                 </div>
-                                <div style={Styles.resultCard}>
-                                    <div style={Styles.badgeContainer}>
-                                        <div style={Styles.badge} >your choise</div>
-                                    </div>
-                                    <h3 style={Styles.optionTitle}> {"whold you rather "} </h3>
-                                    <div style={Styles.bareContaioner}>
-                                        <div style={{ ...Styles.bareColorPart, width: this.state.persent.toString() + "%" }}>
-                                            <h5 style={Styles.bareText}>50 %</h5>
-                                        </div>
-                                    </div>
-                                    <h6> 2 of  3 </h6>
-                                </div>
-
+                                <h6> {o1} of  {all} </h6>
                             </div>
+                            <div style={Styles.resultCard}>
+                                {sulotion === "optionTwo" &&
+                                    <div style={Styles.badgeContainer}>
+                                        <div style={Styles.badge} >your choise</div>
+                                    </div>}
+                                <h3 style={Styles.optionTitle}> {qustion.optionTwo.text} </h3>
+                                <div style={Styles.bareContaioner}>
+                                    <div style={{ ...Styles.bareColorPart, width: persent2.toString() + "%" }}>
+                                        <h5 style={Styles.bareText}>{persent2} %</h5>
+                                    </div>
+                                </div>
+                                <h6> {o2} of  {all} </h6>
+                            </div>
+
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-        );
-    }
+    )
+
 }
-
-
 const Styles = {
     resultSectionContainer: {
         display: "flex",
@@ -111,7 +104,7 @@ const Styles = {
     optionTitle: { color: "#b0003a", fontWeight: "600" },
     bareColorPart: {
         borderRadius: "10px",
-        width: "50" + "%",
+        width: "50%",
         height: 40,
         backgroundColor: "#b0003a"
     },
@@ -147,7 +140,7 @@ const Styles = {
     card: {
 
         flex: 1,
-        maxWidth: "750px",
+        maxWidth: "75%",
         borderRadius: 1,
     },
     cardHeder: {
@@ -164,7 +157,7 @@ const Styles = {
         fontWeight: "500",
     },
     cardSectionContainer: {
-        flexWrap :'wrap',
+        flexWrap: 'wrap',
         marginBottom: 20,
         marginTop: 20,
         marginLeft: 5,
@@ -172,12 +165,12 @@ const Styles = {
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-between",
-        
+
         flex: 1,
     },
     avatarSection: {
-        minWidth :150,
-        minHeight : 150,
+        minWidth: 150,
+        minHeight: 150,
         flex: 1,
         // backgroundColor: "yellow",
         backgroundRepeat: "no-repeat",
@@ -191,7 +184,7 @@ const Styles = {
         borderRightStyle: "dotted",
     },
     qustionSectionsContainer: {
-        minWidth :300,
+        minWidth: 300,
 
         marginLeft: "25px",
         display: "flex",
@@ -208,10 +201,3 @@ const Styles = {
 }
 
 
-function mapStateToProps({ authedUser }) {
-    return {
-        loading: authedUser === null
-    }
-}
-
-export default connect(mapStateToProps)(Home)
